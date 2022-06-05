@@ -1,0 +1,6 @@
+main: at.beampur.beamport.master.Main
+name: beampur
+version: 0.1
+api-version: 1.18
+commands:
+  tp:

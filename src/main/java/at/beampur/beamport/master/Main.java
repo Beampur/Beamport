@@ -1,8 +1,8 @@
 package at.beampur.beamport.master;
 
-import at.beampur.beamport.commands.Commands;
+import at.beampur.beamport.commands.Tp;
+import at.beampur.beamport.commands.Tphere;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
@@ -24,7 +24,8 @@ public class Main extends JavaPlugin {
         //PluginManager pluginManager = Bukkit.getPluginManager();
         //pluginManager.
 
-        Objects.requireNonNull(this.getCommand("tp")).setExecutor(new Commands());
+        Objects.requireNonNull(this.getCommand("tp")).setExecutor(new Tp());
+        Objects.requireNonNull(this.getCommand("tphere")).setExecutor(new Tphere());
 
     }
 

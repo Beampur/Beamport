@@ -2,7 +2,6 @@ package at.beampur.beamport.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,26 +10,32 @@ import org.bukkit.entity.Player;
 import java.util.logging.Level;
 
 
-public class Commands implements CommandExecutor {
-
-    /*
-
-    /tp spielername
-      0      1
-    args.lenght == 0
-             0         1       2       3
-    args[0] targetName
-
-     */
+public class Tp implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
 
 
-
+        //wird abgefragt ob der Sender ein Spieler ist
         if(sender instanceof Player) {
 
             Player player = (Player) sender;
+
+
+
+            /*
+
+            /HAUPTKOMMAND SUBKOMMAND1 <- args.length == 1
+                            args[0]
+            /HAUPTKOMMAND SUBKOMMAND1 SUBKOMMAND2 <- args.length == 2
+                            args[0]     args[1]
+            /HAUPTKOMMAND SUBKOMMAND1 SUBKOMMAND2 SUBKOMMAND3 <- args.length == 3
+                            args[0]     args[1]     args[2]
+
+            args.length == 1 <- Subkommand anzahl
+            args.length == 2 <- hängen zwei weitere wörter an dem Haupt Befehl
+
+             */
 
             if(args.length == 1) {
 
@@ -39,8 +44,7 @@ public class Commands implements CommandExecutor {
 
                 if(targetPlayer != null) {
 
-                    //  Permission beamport.*
-
+                    //  Permission wird erstellt
                     String tpPerm = "beamport.tp.target";
 
                     if(player.hasPermission(tpPerm)) {
@@ -89,6 +93,8 @@ public class Commands implements CommandExecutor {
                                 Location targetLocationB = targetPlayerB.getLocation();
                                 targetPlayerA.teleport(targetLocationB);
 
+
+                                //bei msg´s nicht vergessen .getName (für den namen)
                                 player.sendMessage("Du hast erfolgreich den Spieler " + targetPlayerA.getName()+
                                         " zu " + targetPlayerB.getName() + " teleportiert.");
 
@@ -97,14 +103,11 @@ public class Commands implements CommandExecutor {
 
                                 return false;
 
-                                //Test
-
-
                             }
 
                         } else {
 
-                            player.sendMessage("Du hast keine Berechtigung fpr diesen Befehl.");
+                            player.sendMessage("Du hast keine Berechtigung für diesen Befehl.");
                             return false;
 
                         }
@@ -121,6 +124,7 @@ public class Commands implements CommandExecutor {
 
         } else {
 
+            //MSG an die Console Level.SVERE (in dem fall eine Error message)
             Bukkit.getLogger().log(Level.SEVERE, "Du bist gar kein Spieler");
 
         }

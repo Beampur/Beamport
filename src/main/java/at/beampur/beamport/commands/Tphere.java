@@ -25,23 +25,23 @@ public class Tphere implements CommandExecutor {
 
                 if(targetPlayer != null) {
 
-                    String tpherePerm = "bemaport.tp.here";
+                    String tpherePerm = "beamport.tp.here";
 
-                    if(targetPlayer.hasPermission(tphere)) {
+                    if(targetPlayer.hasPermission(tpherePerm)) {
 
                         if(targetPlayer.isOnline()) {
 
                             Location targetLocation = targetPlayer.getLocation();
 
                             player.teleport(targetLocation);
-                            player.sendMessage("Du hast erfolgreich den Spieler" + targetPlayer.getName +
-                                    " zu dir teleportiert.");
+                            player.sendMessage("Du hast erfolgreich den Spieler"
+                                    + targetPlayer.getName() + " zu dir teleportiert.");
 
                             return false;
 
                         } else {
 
-                            player.sendMessage("Der Spieler " + targetPlayer + " ist nicht online.");
+                            player.sendMessage("Der Spieler " + targetPlayer.getName() + " ist nicht online.");
 
                         }
 

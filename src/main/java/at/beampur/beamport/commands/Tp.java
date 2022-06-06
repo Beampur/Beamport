@@ -21,8 +21,6 @@ public class Tp implements CommandExecutor {
 
             Player player = (Player) sender;
 
-
-
             /*
 
             /HAUPTKOMMAND SUBKOMMAND1 <- args.length == 1

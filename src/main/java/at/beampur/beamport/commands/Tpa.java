@@ -6,10 +6,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.ComplexEntityPart;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class Tpa implements CommandExecutor {
 
@@ -22,17 +25,22 @@ public class Tpa implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
 
+
         if (sender instanceof Player) {
 
             Player player = (Player) sender;
-
-            player.sendMessage("Du bist ein " + plugin.test);
 
             if (args.length == 1) {
 
                 //equalsIgnoreCase checkt ob bei args[0] accept steht (ignoreCase = scheiss auf groß,kein schreibung)
                 if(args[0].equalsIgnoreCase("deny")) {
 
+                    Player targetPlayer = tpaRequest.get(player);//FICK DICH
+                    tpaRequest.remove(player);
+
+                    player.sendMessage("Die Anfrage wurde erfolgreich abgelehnt.");
+
+                    targetPlayer.sendMessage("Die Anfrage wurde abgelehnt.");
                     return false;
                 }
                 //equalsIgnoreCase checkt ob bei args[0] accept steht (ignoreCase = scheiss auf groß,kein schreibung)
@@ -52,7 +60,6 @@ public class Tpa implements CommandExecutor {
                         return false;
                     }
                 }
-
 
                 String targetName = args[0];
                 Player targetPlayer = Bukkit.getPlayer(targetName);
@@ -96,10 +103,16 @@ public class Tpa implements CommandExecutor {
 
                             new BukkitRunnable() {
 
-                                int timer = 15; // 20 -> Sekunden
+                                int timer = 5; // 20 -> Sekunden
+                                Player targetFinal = targetPlayer;
 
                                 @Override
                                 public void run() {
+
+                                    if(!tpaRequest.containsValue(targetFinal)) {
+                                        cancel();
+
+                                    }
 
                                     timer --; // -- bedeutet -> zieht immer 1 ab und ++ -> fügt immer 1 dazu
 
@@ -111,7 +124,6 @@ public class Tpa implements CommandExecutor {
                                         targetPlayer.sendMessage(ChatColor.DARK_RED + "Die Anfrage wurde abbgebrochen.");
                                         cancel();
                                     }
-
                                 }
                             }.runTaskTimerAsynchronously(plugin, 0, 20);
 
@@ -130,20 +142,13 @@ public class Tpa implements CommandExecutor {
                             return false;
 
                         }
-
                     }
-
                 } else {
                     player.sendMessage("Dieser Spieler existiert nicht");
                     return false;
                 }
-
-                //   /tpa accpet
-
-
             }
         }
-
         return false;
     }
 }
